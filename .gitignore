@@ -44,5 +44,7 @@ build/
 mvnw.cmd
 HELP.md
 mvnw
+.mvn
+
 *.db
 db/*
