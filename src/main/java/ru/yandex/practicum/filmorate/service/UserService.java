@@ -1,52 +1,35 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.repository.Repository;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
+@Service
 @Data
-@Slf4j
 public class UserService {
-    private static int count = 1;
-    private final Repository repository = new Repository<>();
 
-    public List<User> getAllUsers() {
-        return new ArrayList<>(repository.getRepositoryList().values());
+    private UserStorage userStorage;
+
+    @Autowired
+    public UserService(UserStorage userStorage){
+        this.userStorage = userStorage;
     }
 
-    public User addUser(User user) {
-        user = validationCheckUser(user);
-        user.setId(count++);
-        repository.getRepositoryList().put(user.getId(), user);
-        log.info("Пользователь добавлен!");
-        return user;
+    public void addToFriends(User user1, User user2){
+        user1.getFriends().add(user2.getId());
     }
 
-    public User addChangeUser(User user) {
-        user = validationCheckUser(user);
-        if (repository.getRepositoryList().containsKey(user.getId())) {
-            repository.getRepositoryList().put(user.getId(), user);
-            log.info("Пользователь обнавлён!");
-            return user;
+    public void deleteFromFriends(User user1, User user2){ //TODO если пользователь не найден
+        if (user1.getFriends().contains(user2.getId())) {
+            user1.getFriends().remove(user2.getId());
         }
-        log.info("Пользователя с id: {} не существует!", user.getId());
-        throw new ValidationException("Пользователя с id: " + user.getId() + " не существует!");
     }
 
-    private User validationCheckUser(User user) {
-        if (user.getLogin() != null && (user.getName() == null || user.getName().isBlank())) {
-            user.setName(user.getLogin());
-        }
-        if (user.getBirthday() != null && user.getBirthday().isAfter(LocalDate.now())) {
-            log.info("Дата рождения не может быть в будущем!");
-            throw new ValidationException("Дата рождения не может быть в будущем!");
-        }
-        return user;
+    public Set<Integer> getAllFriends(User user){
+        return user.getFriends();
     }
 }
