@@ -1,20 +1,14 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.DataByIdException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.repository.FilmsRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @Slf4j
@@ -41,7 +35,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             return film;
         }
         log.info("Фильма с id: {} не существует!", film.getId());
-        throw new ValidationException("Фильма с id: " + film.getId() + " не существует!");
+        throw new DataByIdException("Фильма с id: " + film.getId() + " не существует!");
     }
 
     @Override
@@ -69,4 +63,15 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
         return film;
     }
+
+    @Override
+    public Film getFilmById(int id) {
+        Optional<Film> film = getAllFilms().stream().filter(f -> f.getId() == id).findFirst();
+        if (!film.isPresent()) {
+            log.info("Фильм с id: " + id + " не найден.");
+            throw new DataByIdException("Фильм с id: " + id + " не найден.");
+        }
+        return film.get();
+    }
 }
+

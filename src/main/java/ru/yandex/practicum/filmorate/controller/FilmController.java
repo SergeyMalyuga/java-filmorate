@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -15,12 +14,12 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/films")
 public class FilmController {
-   private FilmService filmService;
+    private FilmService filmService;
 
-   @Autowired
-   public FilmController(FilmService filmService) {
-       this.filmService = filmService;
-   }
+    @Autowired
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
+    }
 
     @PostMapping()
     public Film addFilm(@Valid @RequestBody Film film) {
@@ -35,5 +34,10 @@ public class FilmController {
     @GetMapping()
     public List<Film> getAllFilms() {
         return filmService.getFilmStorage().getAllFilms();
+    }
+
+    @GetMapping("{id}")
+    public Film getFilmById(@PathVariable int id) {
+        return filmService.getFilmStorage().getFilmById(id);
     }
 }

@@ -3,15 +3,14 @@ package ru.yandex.practicum.filmorate.storage.user;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.DataByIdException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.repository.FilmsRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @Slf4j
@@ -32,6 +31,16 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
+    @Override
+    public User getUserById(int id){
+        Optional<User> user = getAllUsers().stream().filter(f -> f.getId() == id).findFirst();
+        if (!user.isPresent()) {
+            log.info("Пользователь с id: " + id + " не найден.");
+            throw new DataByIdException("Пользователь с id:" + id +" не найден.");
+        }
+        return user.get();
+    }
+
     public User addChangeUser(User user) {
         user = validationCheckUser(user);
         if (repository.containsKey(user.getId())) {
@@ -40,7 +49,7 @@ public class InMemoryUserStorage implements UserStorage {
             return user;
         }
         log.info("Пользователя с id: {} не существует!", user.getId());
-        throw new ValidationException("Пользователя с id: " + user.getId() + " не существует!");
+        throw new DataByIdException("Пользователя с id: " + user.getId() + " не существует!");
     }
 
     private User validationCheckUser(User user) {
