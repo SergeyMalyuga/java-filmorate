@@ -12,13 +12,13 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleFilmByIdNotFound(DataByIdException e){
-      return new ErrorResponse("Не верный id.",e.getMessage());
+    public ErrorResponse handleFilmByIdNotFound(DataByIdException e) {
+        return new ErrorResponse("Не верный id.", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException(ValidationException e){
+    public ErrorResponse handleValidationException(ValidationException e) {
         return new ErrorResponse("Не валидное значение", e.getMessage());
     }
 }
