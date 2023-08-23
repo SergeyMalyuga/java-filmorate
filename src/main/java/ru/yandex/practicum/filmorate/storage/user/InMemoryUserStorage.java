@@ -5,9 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataByIdException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.repository.FilmsRepository;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -32,11 +30,11 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getUserById(int id){
+    public User getUserById(int id) {
         Optional<User> user = getAllUsers().stream().filter(f -> f.getId() == id).findFirst();
         if (!user.isPresent()) {
             log.info("Пользователь с id: " + id + " не найден.");
-            throw new DataByIdException("Пользователь с id:" + id +" не найден.");
+            throw new DataByIdException("Пользователь с id:" + id + " не найден.");
         }
         return user.get();
     }

@@ -52,7 +52,8 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (film.getDescription() == null) {
             film.setDescription("Описание фильма отстутсвует!");
         }
-        if (film.getReleaseDate() == null || film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+        if (film.getReleaseDate() == null || film.getReleaseDate()
+                .isBefore(LocalDate.of(1895, 12, 28))) {
             log.info("Дата релиза - не раньше 28 декабря 1895 года");
             throw new ValidationException("Дата релиза - не раньше 28 декабря 1895 года");
 
