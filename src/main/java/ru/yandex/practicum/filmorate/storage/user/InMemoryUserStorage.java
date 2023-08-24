@@ -31,12 +31,8 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User getUserById(int id) {
-        Optional<User> user = getAllUsers().stream().filter(f -> f.getId() == id).findFirst();
-        if (!user.isPresent()) {
-            log.info("Пользователь с id: " + id + " не найден.");
-            throw new DataByIdException("Пользователь с id:" + id + " не найден.");
-        }
-        return user.get();
+        return Optional.ofNullable(repository.get(id))
+                .orElseThrow(() -> new DataByIdException("Пользователь с id: " + id + " не найден."));
     }
 
     public User addChangeUser(User user) {

@@ -43,6 +43,12 @@ public class InMemoryFilmStorage implements FilmStorage {
         return new ArrayList<>(repository.values());
     }
 
+    @Override
+    public Film getFilmById(int id) {
+        return Optional.ofNullable(repository.get(id))
+                .orElseThrow(() -> new DataByIdException("Фильм с id: " + id + " не найден."));
+    }
+
     private Film validationCheckFilm(Film film) {
         if (film.getDescription() != null && film.getDescription().length() > 200) {
             log.info("Маскисальная длина описания - 200 символов");
@@ -63,16 +69,6 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new ValidationException("Продолжительность фильма должна быть положительной!");
         }
         return film;
-    }
-
-    @Override
-    public Film getFilmById(int id) {
-        Optional<Film> film = getAllFilms().stream().filter(f -> f.getId() == id).findFirst();
-        if (!film.isPresent()) {
-            log.info("Фильм с id: " + id + " не найден.");
-            throw new DataByIdException("Фильм с id: " + id + " не найден.");
-        }
-        return film.get();
     }
 }
 

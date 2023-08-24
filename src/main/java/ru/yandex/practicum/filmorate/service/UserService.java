@@ -63,4 +63,20 @@ public class UserService {
         }
         return sameFriends;
     }
+
+    public List<User> getAllUsers() {
+        return userStorage.getAllUsers();
+    }
+
+    public User addUser(User user) {
+        return userStorage.addUser(user);
+    }
+
+    public User getUserById(int id) {
+        return userStorage.getUserById(id);
+    }
+
+    public User addChangeUser(User user) {
+        return userStorage.addChangeUser(user);
+    }
 }

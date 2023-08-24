@@ -23,26 +23,26 @@ public class FilmController {
 
     @PostMapping()
     public Film addFilm(@Valid @RequestBody Film film) {
-        return filmService.getFilmStorage().addFilm(film);
+        return filmService.addFilm(film);
     }
 
     @PutMapping()
     public Film changeFilm(@Valid @RequestBody Film film) {
-        return filmService.getFilmStorage().changeFilm(film);
+        return filmService.changeFilm(film);
     }
 
     @GetMapping()
     public List<Film> getAllFilms() {
-        return filmService.getFilmStorage().getAllFilms();
+        return filmService.getAllFilms();
     }
 
     @GetMapping("{id}")
     public Film getFilmById(@PathVariable int id) {
-        return filmService.getFilmStorage().getFilmById(id);
+        return filmService.getFilmById(id);
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public  String addLike(@PathVariable int id, @PathVariable int userId) {
+    public String addLike(@PathVariable int id, @PathVariable int userId) {
         return filmService.addLike(id, userId);
     }
 
