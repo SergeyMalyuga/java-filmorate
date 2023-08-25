@@ -9,11 +9,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
 public class Film {
     private int id;
+    private final Set<Integer> userLikes = new HashSet<>();
     @NotNull(message = "Название не может быть пустым!")
     @NotBlank(message = "Название не может быть пустым!")
     private String name;
