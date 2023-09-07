@@ -16,6 +16,7 @@ import java.util.Map;
 @Builder
 public class User {
     private int id;
+    private FriendshipStatus friendship;
     @JsonIgnore
     private final Map<Integer, User> friends = new HashMap<>();
 

@@ -16,7 +16,9 @@ import java.util.Set;
 @Builder
 public class Film {
     private int id;
+    private RatingType rating;
     private final Set<Integer> userLikes = new HashSet<>();
+    private final Set<GenreType> genre = new HashSet<>();
     @NotNull(message = "Название не может быть пустым!")
     @NotBlank(message = "Название не может быть пустым!")
     private String name;
