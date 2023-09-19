@@ -85,6 +85,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>21.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
