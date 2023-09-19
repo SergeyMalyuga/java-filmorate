@@ -1,4 +1,4 @@
-
+DROP ALL OBJECTS;
 create table if not exists RATING (
 	RATING_ID integer not null,
 	RATING_NAME varchar(20),
