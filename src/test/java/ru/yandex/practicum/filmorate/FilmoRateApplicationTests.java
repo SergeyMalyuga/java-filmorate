@@ -35,7 +35,6 @@ class FilmoRateApplicationTests {
                 );
     }
 
-
     @Test
     public void addChangeUser() {
         User user = userStorage.getUserById(3);
