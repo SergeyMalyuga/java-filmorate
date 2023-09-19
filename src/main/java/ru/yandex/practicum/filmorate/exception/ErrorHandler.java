@@ -11,7 +11,7 @@ import ru.yandex.practicum.filmorate.controller.UserController;
 public class ErrorHandler {
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.OK) //NOT_FOUND
     public ErrorResponse handleFilmByIdNotFound(DataByIdException e) {
         return new ErrorResponse("Не верный id.", e.getMessage());
     }
