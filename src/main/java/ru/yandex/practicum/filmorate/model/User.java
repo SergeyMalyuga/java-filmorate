@@ -16,9 +16,9 @@ import java.util.Map;
 @Builder
 public class User {
     private int id;
-    private FriendshipStatus friendship;
+
     @JsonIgnore
-    private final Map<Integer, User> friends = new HashMap<>();
+    private final Map<Integer, FriendshipStatus> friends = new HashMap<>();
 
     @Email(message = "Email is not valid")
     @NotNull(message = "Электронная почта не может быть пустой!")

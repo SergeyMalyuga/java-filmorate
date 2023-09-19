@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,14 +11,16 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Data
 @Builder
 public class Film {
     private int id;
-    private RatingType rating;
+    private Mpa mpa;
+    @JsonIgnore
     private final Set<Integer> userLikes = new HashSet<>();
-    private final Set<GenreType> genre = new HashSet<>();
+    private final TreeSet<Genres> genres = new TreeSet<>();
     @NotNull(message = "Название не может быть пустым!")
     @NotBlank(message = "Название не может быть пустым!")
     private String name;

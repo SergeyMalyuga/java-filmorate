@@ -32,6 +32,9 @@ public class UserController {
     }
 
     @GetMapping("{id}/friends")
+/*    public Map<User, FriendshipStatus> getAllFriends(@PathVariable int id) {
+        return userService.getAllFriends(id);
+    }*/
     public List<User> getAllFriends(@PathVariable int id) {
         return userService.getAllFriends(id);
     }
