@@ -1,10 +1,13 @@
 package ru.yandex.practicum.filmorate;
 
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
 import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.model.*;
@@ -22,6 +25,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FilmoRateApplicationTests {
     private final UserDbStorage userStorage;
     private final FilmDbStorage filmDbStorage;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @BeforeEach
+    public void startTest() {
+        String sqlAddUsers = "INSERT INTO USERS (USER_ID,  LOGIN, EMAIL, BIRTHDAY , USER_NAME )\n" +
+                "VALUES (1, 'Star', 'galya@yandex.ru', '1991-01-25', 'Galya'),\n" +
+                "       (2, 'King', 'nick@yandex.ru', '1976-09-20', 'Nick'),\n" +
+                "       (3, 'Gold', 'mary@yandex.ru', '1989-11-17', 'Mary');";
+        String sqlAddFilms = "INSERT INTO FILMS (FILM_ID,  RATING_ID, FILM_NAME, RELEASE_DATE , DURATION)\n" +
+                "VALUES (1, 2, 'Kill Bill', '1980-09-20', 1000),\n" +
+                "       (2, 2, 'Мстители', '1980-09-20', 1000);\n";
+        jdbcTemplate.update(sqlAddFilms);
+        jdbcTemplate.update(sqlAddUsers);
+    }
+
+    @AfterEach
+    public void endTest() {
+        String sqlDeleteFilms = "DELETE FROM films WHERE film_id <>0;";
+        String sqlDeleteUsers = "DELETE FROM users WHERE user_id <>0;";
+        jdbcTemplate.update(sqlDeleteFilms);
+        jdbcTemplate.update(sqlDeleteUsers);
+    }
 
     @Test
     public void findUserById() {
