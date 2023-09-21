@@ -54,12 +54,14 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User getUserById(int id) {
         String sql = "SELECT * FROM users WHERE user_id = ?;";
-        List<User> user = jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs), id);
-        if (user.isEmpty()) {
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, id);
+        User user;
+        if (sqlRowSet.next()) {
+            user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> makeUser(rs), id);
+        } else {
             throw new DataByIdException("Пользователь с id: " + id + " не найден.");
         }
-        addFriendsToUser(user.get(0));
-        return user.get(0);
+        return addFriendsToUser(user);
     }
 
     @Override
@@ -150,7 +152,6 @@ public class UserDbStorage implements UserStorage {
         }
         return FriendshipStatus.UNCONFIRMED;
     }
-
 
     private int setCountId() {
         if (getAllUsers().size() == 0) {

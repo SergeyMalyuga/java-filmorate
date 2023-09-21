@@ -27,7 +27,7 @@ import java.util.TreeSet;
 public class FilmDbStorage implements FilmStorage {
     JdbcTemplate jdbcTemplate;
     private static int count = 0;
-    int ratingId;
+    private int ratingId;
 
     @Autowired
     public FilmDbStorage(JdbcTemplate jdbcTemplate) {
@@ -83,12 +83,15 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film getFilmById(int id) {
         String sql = "SELECT * FROM films WHERE film_id=?";
-        List<Film> film = jdbcTemplate.query(sql, (rs, inF) -> makeFilm(rs), id);
-        if (film.isEmpty()) {
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, id);
+        Film film;
+        if (sqlRowSet.next()) {
+            film = jdbcTemplate.queryForObject(sql, (rs, inF) -> makeFilm(rs), id);
+        } else {
             log.info("Фильма с id: {} не существует!", id);
             throw new DataByIdException("Фильма с id: " + id + " не существует!");
         }
-        return addUserLikes(addGenreToFilm(film.get(0)));
+        return addUserLikes(addGenreToFilm(film));
     }
 
     @Override
@@ -142,13 +145,12 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Mpa getMpaById(int id) {
         String sql = "SELECT * FROM rating WHERE rating_id = ?";
-        Mpa mpa = new Mpa();
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, id);
+        Mpa mpa;
         if (sqlRowSet.next()) {
-            mpa.setId(sqlRowSet.getInt("rating_id"));
-            mpa.setName(getRatingTypeById(sqlRowSet.getInt("rating_id")));
+            mpa = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> makeMpa(rs), id);
         } else {
-            throw new DataByIdException("Jib,rf");
+            throw new DataByIdException("Рейтинг с id: " + id + " не найден!");
         }
         return mpa;
     }
@@ -228,6 +230,15 @@ public class FilmDbStorage implements FilmStorage {
                 .description(description)
                 .releaseDate(releaseDate)
                 .duration(duration).build();
+    }
+
+    private Mpa makeMpa(ResultSet rs) throws SQLException {
+        int id = rs.getInt("rating_id");
+        String name = rs.getString("rating_name");
+        Mpa mpa = new Mpa();
+        mpa.setId(id);
+        mpa.setName(name);
+        return mpa;
     }
 
     private Film addGenreToFilm(Film film) {

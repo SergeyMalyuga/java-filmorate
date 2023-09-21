@@ -65,7 +65,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public List<Mpa> getAllMpa() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public List<Genres> getAllGenres() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
