@@ -182,6 +182,6 @@ class FilmoRateApplicationTests {
 
     @Test
     public void shouldGetGenresById() {
-        assertThat(filmDbStorage.getGenreById(1).getName()).isEqualTo(GenreType.Комедия);
+        assertThat(filmDbStorage.getGenreById(1).getName()).isEqualTo(GenreType.COMEDY.getValue());
     }
 }

@@ -196,20 +196,20 @@ public class FilmDbStorage implements FilmStorage {
         return "NO_TYPE";
     }
 
-    private GenreType getGenreTypeById(int id) {
+    private String getGenreTypeById(int id) {
         switch (id) {
             case 1:
-                return GenreType.Комедия;
+                return GenreType.COMEDY.getValue();
             case 2:
-                return GenreType.Драма;
+                return GenreType.DRAMA.getValue();
             case 3:
-                return GenreType.Мультфильм;
+                return GenreType.CARTOON.getValue();
             case 4:
-                return GenreType.Триллер;
+                return GenreType.THRILLER.getValue();
             case 5:
-                return GenreType.Документальный;
+                return GenreType.DOCUMENTARY.getValue();
             case 6:
-                return GenreType.Боевик;
+                return GenreType.ACTION_MOVIE.getValue();
         }
         return null;
     }

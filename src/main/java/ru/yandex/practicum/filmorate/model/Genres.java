@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Data
 public class Genres implements Serializable, Comparable<Genres> {
     private int id;
-    private GenreType name;
+    private String name;
 
     @Override
     public int compareTo(Genres o) {
