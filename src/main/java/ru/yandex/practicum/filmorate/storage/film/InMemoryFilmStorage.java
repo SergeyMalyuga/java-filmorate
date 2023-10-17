@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataByIdException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genres;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -41,6 +43,44 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public List<Film> getAllFilms() {
         return new ArrayList<>(repository.values());
+    }
+
+    @Override
+    public String addLike(int filmId, int userId) {
+        Film film = getFilmById(filmId);
+        film.getUserLikes().add(userId);
+        return "Вы поставили like фильму: " + film.getName();
+    }
+
+    @Override
+    public String deleteLike(int filmId, int userId) {
+        Film film = getFilmById(filmId);
+        if (film.getUserLikes().contains(userId)) {
+            film.getUserLikes().remove(userId);
+            return "Лайк с фильма: " + film.getName() + " удалён: ";
+        }
+        throw new DataByIdException("Вы не лайкали: " + film.getName());
+
+    }
+
+    @Override
+    public List<Mpa> getAllMpa() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public Mpa getMpaById(int id) {
+        return null;
+    }
+
+    @Override
+    public List<Genres> getAllGenres() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public Genres getGenreById(int id) {
+        return null;
     }
 
     @Override

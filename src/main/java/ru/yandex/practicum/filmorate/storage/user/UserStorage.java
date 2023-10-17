@@ -14,4 +14,8 @@ public interface UserStorage {
 
     List<User> getAllUsers();
 
+    public String addToFriends(int id1, int id2);
+
+    String deleteFromFriends(int id1, int id2);
+
 }
