@@ -1,6 +1,29 @@
-# java-filmorate
-Template repository for Filmorate project.
+# java-filmorate(*оценка фильма*)
 
+![](https://pictures.s3.yandex.net/resources/Comp-1-2_1668789282.gif)
+
+Данная программа представляет собой бэкенд для сервиса, который работает с фильмами и оценками пользователей, 
+а также возвращает топ-5 фильмов, рекомендованных к просмотру.
+
+---
+
+### Поддержка следующих методов:
+
+**PUT /users/{id}/friends/{friendId}** — добавление в друзья.
+
+**DELETE /users/{id}/friends/{friendId}** — удаление из друзей.
+
+**GET /users/{id}/friends** — возвращаем список пользователей, являющихся его друзьями.
+
+**GET /users/{id}/friends/common/{otherId}** — список друзей, общих с другим пользователем.
+
+**PUT /films/{id}/like/{userId}** — пользователь ставит лайк фильму.
+
+**DELETE /films/{id}/like/{userId}** — пользователь удаляет лайк.
+
+**GET /films/popular?count={count}** — возвращает список из первых count фильмов по количеству лайков. Если значение параметра count не задано, верните первые 10.
+
+### Схема БД:
 ![Filmorate.png](src/main/resources/Filmorate.png)
 
 ### Код для запросов:
